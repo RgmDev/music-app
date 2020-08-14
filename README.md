@@ -51,6 +51,7 @@ npm install
 ``` 
 
 # Crear la base de datos
+Desde la consola de mongo.exe
 ```
 # Crear la base de datos
 use music_app
