@@ -82,8 +82,6 @@ function updateUser(req, res){
   let userId = req.params.id 
   let update = req.body
 
-  return res.status(500).send({update})
-
   User.findByIdAndUpdate(userId, update, (err, userUpdated) => {
     if(err){
       res.status(500).send({message: 'Error al actualizar el usuario'})
@@ -96,8 +94,8 @@ function updateUser(req, res){
     }
 
   })
+  
 }
-
 
 
 module.exports = {
