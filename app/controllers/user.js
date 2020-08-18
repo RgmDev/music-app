@@ -7,9 +7,7 @@ const fs = require('fs')
 const path = require('path')
 
 function pruebas(req, res){
-  res.status(200).send({
-    message: 'pruebas de controlador'}
-  )
+  res.status(200).send({ message: 'pruebas de controlador'})
 }
 
 function saveUser(req, res){
@@ -102,15 +100,13 @@ function updateUser(req, res){
 function uploadImage(req, res){
   let userId = req.params.id
   let file_name = 'No subido...'
-
   if(req.files){
     let file_path = req.files.image.path
     let file_split = file_path.split('\\')
     file_name = file_split[2]
     let ext_split = file_name.split('\.')
     let file_ext = ext_split[1]
-
-    if(file_ext == 'png' || file_ext == 'jpg' || file_ext == 'gif'){
+    if(file_ext == 'png' || file_ext == 'jpg' || file_ext == 'gif' || file_ext == 'jpeg'){
       User.findByIdAndUpdate(userId, {image: file_name}, (err, userUpdated) => {
         if(!userUpdated){
           res.status(404).send({ message: 'No se ha podido actualizar el usuario' })
@@ -121,8 +117,6 @@ function uploadImage(req, res){
     }else{
       res.status(200).send({ message: 'Extensión de archivo no valida' })
     }
-
-
   }else{
     res.status(200).send({ message: 'No ha subido la imagen' })
   }
