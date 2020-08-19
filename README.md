@@ -61,6 +61,12 @@ db.artists.save({ name: 'Delafuente', description: 'Musica urbana', imagen: null
 
 # Mostrar el contenido de la tabla de artistas
 db.artists.find();
+
+# Buscar un _id en la tabla de artistas
+db.artists.find({"_id": ObjectId("5f3c492349033231787cc8bd")});
+
+# Eliminar un objeto de una coleccion por su _id
+db.artists.remove({"_id": ObjectId("5f3c492349033231787cc8bd")});
 ```
 
 
