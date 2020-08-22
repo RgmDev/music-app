@@ -70,3 +70,19 @@ db.artists.remove({"_id": ObjectId("5f3c492349033231787cc8bd")});
 ```
 
 
+# Angular
+```
+# Instalar angular-cli
+npm install -g @angular/cli
+
+# Lista de comandos de angular 
+ng help
+
+# Crear un proyecto base y ponerlo a disposicion por el puerto 4200 
+ng new my-fisrt-proyect 
+cd my-fisrt-proyect 
+ng serve // npm start 
+
+# Generar componentes, servicios...
+ng generate <type> 
+``` 
