@@ -9,7 +9,7 @@ const path = require('path')
 function pruebas(req, res){
   res.status(200).send({ message: 'pruebas de controlador'})
 }
-
+                                               
 function saveUser(req, res){
   let user = new User()
   let params = req.body
@@ -69,7 +69,7 @@ function loginUser(req, res){
               res.status(200).send({user})  
             }
           }else{
-            res.status(200).send({message: 'La contraseña es incorrecta'})
+            res.status(404).send({message: 'El usuario no ha podido identificarse'})
           }
         })
       }
