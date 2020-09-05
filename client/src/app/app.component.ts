@@ -27,7 +27,6 @@ export class AppComponent implements OnInit{
   ngOnInit(){
     this.identity = this._userService.getIdentity()
     this.token = this._userService.getToken()
-    console.log(this.token)
   }
 
   public onSubmit(){
