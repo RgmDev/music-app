@@ -15,7 +15,7 @@ import { UserService } from './services/user.services'
 })
 
 export class AppComponent implements OnInit{
-  public title = 'Music App'
+  public title = 'Musify'
   public user: User
   public user_register: User
   public identity
