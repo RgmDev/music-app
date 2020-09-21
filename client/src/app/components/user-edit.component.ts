@@ -32,7 +32,7 @@ export class UserEditComponent implements OnInit{
   }
 
   ngOnInit(){
-    console.log('Componente cargado')
+    console.log('user-edit component cargado')
   }
 
   onSubmit(){

@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, Params } from '@angular/router'
 
 import { GLOBAL } from './services/global'
-
 import { User } from './models/user';
 import { UserService } from './services/user.services'
-
 
 @Component({
   selector: 'app-root',
@@ -24,10 +23,15 @@ export class AppComponent implements OnInit{
   public alertRegister
   public url: string
 
-  constructor(private _userService: UserService){
+  constructor(
+    private _userService: UserService,
+    private _route: ActivatedRoute,
+    private _router: Router
+  ){
     this.user = new User('', '', '', '', '', 'ROLE_USER', '')
     this.user_register = new User('', '', '', '', '', 'ROLE_USER', '')
     this.url = GLOBAL.url
+    
   }
 
   ngOnInit(){
@@ -56,6 +60,7 @@ export class AppComponent implements OnInit{
               }else{
                 localStorage.setItem('token', JSON.stringify(token))
                 this.user = new User('', '', '', '', '', 'ROLE_USER', '')
+                window.location.href = "/"
               }
               
             }, 
@@ -90,7 +95,7 @@ export class AppComponent implements OnInit{
     localStorage.clear();
     this.identity = null
     this.token = null 
-    location.href = "/"
+    this._router.navigate(['/'])
   }
 
   onSubmitRegister(){

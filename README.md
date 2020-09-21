@@ -66,7 +66,7 @@ db.artists.find();
 db.artists.find({"_id": ObjectId("5f3c492349033231787cc8bd")});
 
 # Eliminar un objeto de una coleccion por su _id
-db.artists.remove({"_id": ObjectId("5f3c492349033231787cc8bd")});
+db.artists.remove({"_id": ObjectId("5f691dd01f4c921430d386af")});
 ```
 
 
