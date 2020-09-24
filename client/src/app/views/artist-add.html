@@ -1,4 +1,4 @@
-<div class="col-lg-6">
+<div *ngIf="identity && identity.role == 'ROLE_ADMIN'" class="col-lg-6">
   <h1>
     {{ titulo }}
   </h1>
@@ -17,6 +17,22 @@
       <span *ngIf="!description.valid && description.touched">La descripción es obligatoria</span>
     </p>
 
+    <div *ngIf="is_edit">
+      <div class="artist_image_for_edit" *ngIf="artist.image && artist.image != 'null'">
+        <img src="{{ url + 'getImageArtist/' +artist.image }}" alt="">
+      </div>
+      <p>
+        <label for="">Sube la imagen del artista</label>
+        <input type="file" placeholder="Subir la imagen..." (change)="fileChangedEvent($event)" />
+      </p>
+      
+    </div>
+
     <input class="btn btn-primary" type="submit" value="{{ titulo }}" [disabled]="!formArtist.form.valid" />
   </form>
 </div>  
+
+<div *ngIf="!identity || identity.role != 'ROLE_ADMIN'" class="col-lg-6">
+  <h1>ERROR</h1>
+  <p>No tienes acceso a esta parte de la aplicación.</p>
+</div>

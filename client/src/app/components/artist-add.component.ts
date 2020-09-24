@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core'
 import { Router, ActivatedRoute, Params } from '@angular/router'
-
 import { GLOBAL } from '../services/global'
 import { UserService } from '../services/user.services'
 import { ArtistService } from '../services/artist.services'
 import { Artist } from '../models/artist'
-
 
 @Component({
   selector: 'artist-add',
@@ -47,7 +45,7 @@ export class ArtistAddComponent implements OnInit{
         }else{
           this.artist = response.artist
           this.alertMessage = 'El artista se ha creado correctamente'
-          // this._router.navigate(['editar-artista'], response.artist._id)
+          this._router.navigate(['editar-artista', response.artist._id])
         }
       }, 
       error => {
@@ -57,11 +55,8 @@ export class ArtistAddComponent implements OnInit{
           this.alertMessage = body.message 
           console.log(error)
         }
-      }
-      
+      } 
     )
-    
-
   }
 
 }
