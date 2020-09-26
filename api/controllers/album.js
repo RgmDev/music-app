@@ -9,7 +9,6 @@ const Album = require('../models/album')
 const Song = require('../models/song')
 
 function getAlbum(req, res){
-
   let id = req.params.id
   Album.findById(id).populate({ path: 'artist'}).exec((err, album) => {
     if(err){
@@ -22,7 +21,6 @@ function getAlbum(req, res){
       }
     }
   })
-  
 }
 
 function saveAlbum(req, res){
@@ -79,7 +77,7 @@ function updateAlbum(req, res){
       if(!albumUpdated){
         res.status(404).send({message: 'El album no ha sido actualizado'})
       }else{
-        res.status(200).send({artist: albumUpdated})
+        res.status(200).send({album: albumUpdated})
       }
     }
   })

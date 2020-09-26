@@ -12,23 +12,23 @@
 <div class="clearfix"></div>
 <ul class="artist-list" *ngIf="identity">
   <div class="row">
-  <li *ngFor="let artist of artists" class="col-lg-3 artist-item">
-    <div class="artist-image">
-      <img src="{{ url + 'getImageArtist/' + artist.image }}" alt="">
-    </div>
-    <div class="artist-name">
-      <a [routerLink]="['/artista', artist._id]">
-        {{ artist.name }}
-      </a>
-      <div class="buttons" *ngIf="identity.role == 'ROLE_ADMIN' && confirmado != artist._id">
-        <a class="btn btn-sm btn-warning" [routerLink]="['/editar-artista', artist._id]">Editar artista</a>
-        <a (click)="onDeleteConfirm(artist._id)" class="btn btn-sm btn-danger">Eliminar</a>
+    <li *ngFor="let artist of artists" class="col-lg-3 artist-item">
+      <div class="artist-image">
+        <img src="{{ url + 'getImageArtist/' + artist.image }}" alt="">
       </div>
-      <div class="seguro" *ngIf="confirmado == artist._id" >
-        <a (click)="onDeleteArtist(artist._id)" class="btn btn-sm btn-danger">Eliminar</a>
-        <a (click)="onCancelArtist()" class="btn btn-sm btn-primary">Cancelar</a>
+      <div class="artist-name">
+        <a [routerLink]="['/artista', artist._id]">
+          {{ artist.name }}
+        </a>
+        <div class="buttons" *ngIf="identity.role == 'ROLE_ADMIN' && confirmado != artist._id">
+          <a class="btn btn-sm btn-warning" [routerLink]="['/editar-artista', artist._id]">Editar artista</a>
+          <a (click)="onDeleteConfirm(artist._id)" class="btn btn-sm btn-danger">Eliminar</a>
+        </div>
+        <div class="seguro" *ngIf="confirmado == artist._id" >
+          <a (click)="onDeleteArtist(artist._id)" class="btn btn-sm btn-danger">Eliminar</a>
+          <a (click)="onCancelArtist()" class="btn btn-sm btn-primary">Cancelar</a>
+        </div>
       </div>
-    </div>
-  </li>
-</div>
+    </li>
+  </div>
 </ul>

@@ -1,0 +1,37 @@
+<div class="album-box mt-3">
+  <div id="album-head-card">
+    <div class="image">
+      <img src="{{ url + 'getImageAlbum/' + album.image }}" alt="">
+    </div>
+    <div class="data"> 
+      <h2>{{ album.title }}</h2>
+      <p>{{ album.artist.name }}<br>{{ album.year }}<br>{{ album.description }}</p>
+      <a class="btn btn-primary" [routerLink]="['/crear-tema', album._id]" *ngIf="identity.role == 'ROLE_ADMIN'">Añadir cancion</a>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+  <div id="gallery-songs" class="mt-4" *ngIf="songs">
+    <ul id="songs-list">
+      <li *ngFor="let song of songs" class="song-item">
+        <div class="title">
+          <a href="" class="btn btn-success">
+            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-play-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+            </svg>
+          </a>
+          {{ song.number + '. ' +song.name + '-' + song.duration }}
+          <div class="buttons" *ngIf="identity.role == 'ROLE_ADMIN' && confirmado != song._id">
+            <a class="btn btn-sm btn-warning" [routerLink]="['/editar-tema', song._id]">Editar</a>
+            <a (click)="onDeleteConfirm(song._id)" class="btn btn-sm btn-danger">Eliminar</a>
+          </div>
+          <div class="buttons seguro" *ngIf="confirmado == song._id" >
+            <a (click)="onDeleteSong(song._id)" class="btn btn-sm btn-danger">Eliminar</a>
+            <a (click)="onCancelSong()" class="btn btn-sm btn-primary">Cancelar</a>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+
+      </li>
+    </ul>
+  </div>
+</div>

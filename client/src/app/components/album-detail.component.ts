@@ -1,23 +1,22 @@
 import { Component, OnInit } from '@angular/core'
 import { Router, ActivatedRoute, Params } from '@angular/router'
-
 import { GLOBAL } from '../services/global'
 import { UserService } from '../services/user.services'
-import { ArtistService } from '../services/artist.services'
 import { Artist } from '../models/artist'
 import { Album } from '../models/album'
+import { Song } from '../models/song'
 import { AlbumService } from '../services/album.services'
-
+import { SongService } from '../services/song.services'
 
 @Component({
-  selector: 'artist-detail',
-  templateUrl: '../views/artist-detail.html',
-  providers: [ UserService, ArtistService, AlbumService ]
+  selector: 'album-detail',
+  templateUrl: '../views/album-detail.html',
+  providers: [ UserService, AlbumService, SongService ]
 })
 
-export class ArtistDetailComponent implements OnInit{
-  public artist: Artist
-  public albums: Album[]
+export class AlbumDetailComponent implements OnInit{
+  public album: Album
+  public songs: Song[]
   public identity
   public token
   public url: string
@@ -28,35 +27,36 @@ export class ArtistDetailComponent implements OnInit{
     private _route: ActivatedRoute,
     private _router: Router,
     private _userService: UserService,
-    private _artistService: ArtistService,
-    private _albumService: AlbumService
+    private _albumService: AlbumService,
+    private _songService: SongService
   ){
     this.identity = this._userService.getIdentity()
     this.token = this._userService.getToken()
     this.url = GLOBAL.url
+    this.album = new Album('', '', '', null, '', '')
   }
   
   ngOnInit(){
-    console.log('artist-detail component cargado')
-    // Llamar al metodo del api para sacar un artista en base a su id getArtist
-    this.getArtist();
+    console.log('album-detail component cargado')
+    this.getAlbum();
   }
 
-  getArtist(){
+  getAlbum(){
     this._route.params.forEach((params : Params) => {
       let id = params['id']
-      this._artistService.getArtist(this.token, id).subscribe(
+      this._albumService.getAlbum(this.token, id).subscribe(
         response => {
-          if(!response.artist){
+          if(!response.album){
             this._router.navigate(['/'])
           }else{
-            this.artist = response.artist   
-            this._albumService.getAlbums(this.token, response.artist._id).subscribe(
+            this.album = response.album 
+            this._songService.getSongs(this.token, response.album._id).subscribe(
               response => {
-                if(!response.albums){
-                  this.alertMessage = 'Este artista no tiene albums'
+                console.log(response)
+                if(!response.songs){
+                  this.alertMessage = 'Este album no tiene canciones'
                 }else{
-                  this.albums = response.albums
+                  this.songs = response.songs
                 }
               }, 
               error => {
@@ -86,17 +86,17 @@ export class ArtistDetailComponent implements OnInit{
     this.confirmado = id
   }
 
-  onCancelAlbum(){
+  onCancelSong(){
     this.confirmado = null
   }
 
-  onDeleteAlbum(id){
-    this._albumService.deleteAlbum(this.token, id).subscribe(
+  onDeleteSong(id){
+    this._songService.deleteSong(this.token, id).subscribe(
       response => {
-        if(!response.album){
+        if(!response.song){
           alert('Error en el servidor')
         }else{
-          this.getArtist()
+          this.getAlbum()
         }
       }, 
       error => {
@@ -109,5 +109,6 @@ export class ArtistDetailComponent implements OnInit{
       }
     )
   }
+
 
 }

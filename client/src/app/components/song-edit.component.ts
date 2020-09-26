@@ -3,20 +3,22 @@ import { Router, ActivatedRoute, Params } from '@angular/router'
 
 import { GLOBAL } from '../services/global'
 import { UserService } from '../services/user.services'
-import { ArtistService } from '../services/artist.services'
-import { UploadService } from '../services/upload.services'
+import { SongService } from '../services/song.services'
 import { Artist } from '../models/artist'
+import { Album } from '../models/album'
+import { Song } from '../models/song'
+import { UploadService } from '../services/upload.services'
 
 
 @Component({
-  selector: 'artist-edit',
-  templateUrl: '../views/artist-add.html',
-  providers: [ UserService, ArtistService, UploadService ]
+  selector: 'song-edit',
+  templateUrl: '../views/song-add.html',
+  providers: [ UserService, SongService, UploadService ]
 })
 
-export class ArtistEditComponent implements OnInit{
+export class SongEditComponent implements OnInit{
   public titulo: string
-  public artist: Artist
+  public song: Song
   public identity
   public token
   public url: string
@@ -27,62 +29,61 @@ export class ArtistEditComponent implements OnInit{
     private _route: ActivatedRoute,
     private _router: Router,
     private _userService: UserService,
-    private _artistService: ArtistService,
+    private _songService: SongService,
     private _uploadService: UploadService
   ){
-    this.titulo = 'Editar artista'
+    this.titulo = 'Editar canción'
     this.identity = this._userService.getIdentity()
     this.token = this._userService.getToken()
     this.url = GLOBAL.url
-    this.artist = new Artist('', '', '', '')
+    this.song = new Song('', null, '', '', '', '')
     this.is_edit = true
   }
   
   ngOnInit(){
-    console.log('artist-edit component cargado')
-    this.getArtist();
+    console.log('song-edit component cargado')
+    this.getSong()
   }
 
-  getArtist(){
-    this._route.params.forEach((params : Params) => {
+  getSong(){
+    this._route.params.forEach((params: Params) => {
       let id = params['id']
-      this._artistService.getArtist(this.token, id).subscribe(
+      this._songService.getSong(this.token, id).subscribe(
         response => {
-          if(!response.artist){
-            this._router.navigate(['/'])
+          if(!response.song){
+            this._router.navigate(['/', response.song.album])
           }else{
-            this.artist = response.artist   
+            this.song = response.song
           }
         }, 
         error => {
           let errorMessage = <any>error
           if(errorMessage != null){
             var body = JSON.parse(error._body)
-            // this.alertMessage = body.message 
+            this.alertMessage = body.message 
             console.log(error)
           }
-        }
+        } 
       )
     })
   }
 
   onSubmit(){
-    this._route.params.forEach((params : Params) => {
+    this._route.params.forEach((params: Params) => {
       let id = params['id']
-      console.log(this.artist)
-      this._artistService.editArtist(this.token, id, this.artist).subscribe(
+      this._songService.editSong(this.token, id, this.song).subscribe(
         response => {
-          if(!response.artist){
+          console.log(response)
+          if(!response.song){
             this.alertMessage = 'Error en el servidor'
           }else{
-            this.alertMessage = 'El artista se ha actualizado correctamente'
+            this.alertMessage = 'La canción se ha actualizado correctamente'
             if(!this.filesToUpload){
-              this._router.navigate(['/artista', response.artist._id])
+              this._router.navigate(['/album', response.song.album])
             }else{
-              this._uploadService.makeFileRequest(this.url+'uploadImageArtist/'+id, [], this.filesToUpload, this.token, 'image')
-              .then(
+              this._uploadService.makeFileRequest(this.url+'upload-file-song/'+id, [], this.filesToUpload, this.token, 'file').then(
                 (result) => {
-                  this._router.navigate(['/artista', response.artist._id])
+                  this._router.navigate(['/album', response.song.album])
                 },
                 (error) => {
                   console.log(error)
@@ -98,8 +99,7 @@ export class ArtistEditComponent implements OnInit{
             this.alertMessage = body.message 
             console.log(error)
           }
-        }
-        
+        } 
       )
     })
   }
@@ -108,5 +108,5 @@ export class ArtistEditComponent implements OnInit{
   fileChangedEvent(fileInput: any){
     this.filesToUpload = <Array<File>>fileInput.target.files
   }
-
+  
 }

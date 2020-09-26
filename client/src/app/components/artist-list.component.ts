@@ -54,7 +54,6 @@ export class ArtistListComponent implements OnInit{
       }
       this._artistService.getArtists(this.token, page).subscribe(
         response => {
-          console.log(response)
           if(!response.artists){
             this._router.navigate(['/'])
           }else{
@@ -75,7 +74,6 @@ export class ArtistListComponent implements OnInit{
 
   public confirmado
   onDeleteConfirm(id){
-    console.log(id)
     this.confirmado = id
   }
 

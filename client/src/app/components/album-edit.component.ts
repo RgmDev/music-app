@@ -3,20 +3,21 @@ import { Router, ActivatedRoute, Params } from '@angular/router'
 
 import { GLOBAL } from '../services/global'
 import { UserService } from '../services/user.services'
-import { ArtistService } from '../services/artist.services'
-import { UploadService } from '../services/upload.services'
+import { AlbumService } from '../services/album.services'
 import { Artist } from '../models/artist'
+import { Album } from '../models/album'
+import { UploadService } from '../services/upload.services'
 
 
 @Component({
-  selector: 'artist-edit',
-  templateUrl: '../views/artist-add.html',
-  providers: [ UserService, ArtistService, UploadService ]
+  selector: 'album-edit',
+  templateUrl: '../views/album-add.html',
+  providers: [ UserService, AlbumService, UploadService ]
 })
 
-export class ArtistEditComponent implements OnInit{
+export class AlbumEditComponent implements OnInit{
   public titulo: string
-  public artist: Artist
+  public album: Album
   public identity
   public token
   public url: string
@@ -27,68 +28,32 @@ export class ArtistEditComponent implements OnInit{
     private _route: ActivatedRoute,
     private _router: Router,
     private _userService: UserService,
-    private _artistService: ArtistService,
+    private _albumService: AlbumService,
     private _uploadService: UploadService
   ){
-    this.titulo = 'Editar artista'
+    this.titulo = 'Editar album'
     this.identity = this._userService.getIdentity()
     this.token = this._userService.getToken()
     this.url = GLOBAL.url
-    this.artist = new Artist('', '', '', '')
+    this.album = new Album('', '', '', null, '', '')
     this.is_edit = true
+    
   }
   
   ngOnInit(){
-    console.log('artist-edit component cargado')
-    this.getArtist();
+    console.log('album-add component cargado')
+    this.getAlbum()
   }
 
-  getArtist(){
+  getAlbum(){
     this._route.params.forEach((params : Params) => {
       let id = params['id']
-      this._artistService.getArtist(this.token, id).subscribe(
+      this._albumService.getAlbum(this.token, id).subscribe(
         response => {
-          if(!response.artist){
+          if(!response.album){
             this._router.navigate(['/'])
           }else{
-            this.artist = response.artist   
-          }
-        }, 
-        error => {
-          let errorMessage = <any>error
-          if(errorMessage != null){
-            var body = JSON.parse(error._body)
-            // this.alertMessage = body.message 
-            console.log(error)
-          }
-        }
-      )
-    })
-  }
-
-  onSubmit(){
-    this._route.params.forEach((params : Params) => {
-      let id = params['id']
-      console.log(this.artist)
-      this._artistService.editArtist(this.token, id, this.artist).subscribe(
-        response => {
-          if(!response.artist){
-            this.alertMessage = 'Error en el servidor'
-          }else{
-            this.alertMessage = 'El artista se ha actualizado correctamente'
-            if(!this.filesToUpload){
-              this._router.navigate(['/artista', response.artist._id])
-            }else{
-              this._uploadService.makeFileRequest(this.url+'uploadImageArtist/'+id, [], this.filesToUpload, this.token, 'image')
-              .then(
-                (result) => {
-                  this._router.navigate(['/artista', response.artist._id])
-                },
-                (error) => {
-                  console.log(error)
-                }
-              )
-            }
+            this.album = response.album
           }
         }, 
         error => {
@@ -98,8 +63,43 @@ export class ArtistEditComponent implements OnInit{
             this.alertMessage = body.message 
             console.log(error)
           }
-        }
-        
+        } 
+      )
+    })
+  }
+
+  onSubmit(){
+    this._route.params.forEach((params: Params) => {
+      let id = params['id']
+      this._albumService.editAlbum(this.token, id, this.album).subscribe(
+        response => {
+          if(!response.album){
+            this.alertMessage = 'Error en el servidor'
+          }else{
+            this.alertMessage = 'El album se ha actualizado correctamente'
+            if(!this.filesToUpload){
+              this._router.navigate(['/artista', response.album.artist])
+            }else{
+              this._uploadService.makeFileRequest(this.url+'uploadImageAlbum/'+id, [], this.filesToUpload, this.token, 'image').then(
+                (result) => {
+                  this._router.navigate(['/artista', response.album.artist])
+                },
+                (error) => {
+                  console.log(error)
+                }
+              )
+            }
+
+          }
+        }, 
+        error => {
+          let errorMessage = <any>error
+          if(errorMessage != null){
+            var body = JSON.parse(error._body)
+            this.alertMessage = body.message 
+            console.log(error)
+          }
+        } 
       )
     })
   }
@@ -108,5 +108,6 @@ export class ArtistEditComponent implements OnInit{
   fileChangedEvent(fileInput: any){
     this.filesToUpload = <Array<File>>fileInput.target.files
   }
+
 
 }
