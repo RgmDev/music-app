@@ -23,6 +23,8 @@ html, body{
   color: white;
   background: #1C1C1F;
   height: 100%;
+  position: fixed;
+  z-index: 999;
 }
 
 .row{
@@ -63,6 +65,10 @@ html, body{
   height: 100px; 
 }
 
+.album-container{
+  padding-bottom: 180px;
+}
+
 .artist-list,
 .album-list{
   margin: 0;
@@ -75,7 +81,7 @@ html, body{
 .album-item{
   /*width: 23%;*/
   margin: 0; 
-  height: 317px;
+  height: 300x;
   margin-top: 20px;
 }
 
@@ -124,6 +130,10 @@ html, body{
   -moz-appearance: textfield;
 }
 
+#gallery-songs{
+  padding-bottom: 150px;
+}
+
 #songs-list{
   margin: 0px;
   padding: 0px;
@@ -137,4 +147,38 @@ html, body{
 
 .song-item .buttons{
   float: right;
+}
+
+.player{
+  background: #1c1c1f;
+  position: fixed;
+  width: 92.2%;
+  bottom: 0;
+  padding: 20px;
+  margin-left: -15px;
+  border-left: 1px solid #444;
+}
+
+.player .album-image{
+  float: left;
+  width: 138px;
+  height: 105px;
+  overflow: hidden;
+}
+
+.player .album-image img{
+  height: 100%;
+}
+
+.player .audio-file{
+  width: 85%;
+  height: 40px;
+  margin-left: 10px;
+  float: left;
+  color: grey;
+}
+
+.player audio{
+  width: 100%;
+  height: 40px;
 }

@@ -57,9 +57,12 @@
       </button>
     </nav>
   </div>
-    
+  
+  <div class='col-lg-1'></div>
   <div [class.hidden]="!identity" class="col-lg-11">
     <router-outlet></router-outlet>
+    <div class="clearfix"></div>
+    <player class="player"></player>
   </div>
 </div>
 

@@ -12,7 +12,7 @@
   <div class="clearfix"></div>
   <div id="gallery-albums" *ngIf="albums">
     <ul class="album-list">
-        <div class="row">
+        <div class="row album-container">
         <li *ngFor="let album of albums" class="col-lg-3 album-item">
           <div class="album-image">
             <img src="{{ url + 'getImageAlbum/' + album.image }}" alt="">
